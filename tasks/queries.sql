@@ -48,7 +48,7 @@ Jó munkát!
     Elvárt eredmény:
         CHN Code-ú ország (China)
 
-        SELECT country.Code, country.Name
+        SELECT *
         FROM `country`
         WHERE country.IndepYear IS NOT NULL ORDER BY country.IndepYear LIMIT 1;
 */
@@ -98,7 +98,7 @@ Jó munkát!
         10 rekord
         kontinensek: Oceania (7 db), Europe (2), South America (1)
 
-        SELECT country.Name, country.Continent
+        SELECT *
         FROM `country`
         WHERE country.LifeExpectancy IS NULL AND country.Population > 0;
 */
@@ -199,7 +199,7 @@ Jó munkát!
         35 rekord
         országkódok, amelyek szerepelnek a listában: DNK, FIN, FRO, ISL, NOR, SJM, SWE
 
-        SELECT city.ID, city.Name, city.CountryCode, city.District, city.Population
+        SELECT *
         FROM `city`
         INNER JOIN country
         ON city.CountryCode = country.Code
@@ -225,7 +225,7 @@ Jó munkát!
         FROM `country`
         WHERE country.IndepYear IS NULL OR country.IndepYear < 1500
         GROUP BY country.Region
-        ORDER BY COUNT(*);
+        ORDER BY COUNT(*) DESC;
 */
 
 
@@ -316,9 +316,9 @@ bónusz 2. (4 pont)
         FROM `city`
         INNER JOIN country
         ON city.CountryCode = country.Code
-        WHERE country.IndepYear IS NOT NULL
-        ORDER by country.IndepYear
-        LIMIT 363;
+        WHERE country.IndepYear = (SELECT MIN(country.IndepYear)
+            FROM `country`)
+        ORDER by country.IndepYear;
 */
 
 
