@@ -46,7 +46,23 @@ Kritériumok az adatbázissal kapcsolatban:
 
 */
 
+    1.
 
+    CREATE TABLE `sqltest`.`user` (`id` INT NOT NULL AUTO_INCREMENT , `name` VARCHAR(100) NOT NULL , `email_address` VARCHAR(100) NOT NULL , `password` VARCHAR(100) NOT NULL , `is_active` BOOLEAN NOT NULL , `date_of_registration` DATE NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+
+
+    2.
+
+    CREATE TABLE `sqltest`.`messages` (`message_id` INT NOT NULL AUTO_INCREMENT , `sender_id` INT NOT NULL , `recipient_id` INT NOT NULL , `message` VARCHAR(100) NOT NULL , `date_sent` DATE NOT NULL , `reply_id` INT NOT NULL , PRIMARY KEY (`message_id`)) ENGINE = InnoDB;
+
+
+
+    3. (Creating a relation - Foreign Key)
+
+    ALTER TABLE `messages` ADD FOREIGN KEY (`sender_id`) REFERENCES `user`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT; ALTER TABLE `messages` ADD FOREIGN KEY (`recipient_id`) REFERENCES `user`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT; ALTER TABLE `messages` ADD FOREIGN KEY (`reply_id`) REFERENCES `messages`(`message_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+    ALTER TABLE `messages` CHANGE `reply_id` `reply_id` INT(11) NULL;
 -- ---------------------------------------------------------------------------------------------------------------------
 
 /*
@@ -56,3 +72,17 @@ Adj hozzá adatokat mindegyik táblához!
 (Az adatoknak nem kell valósnak lenniük. Egy felhasználói email-cím lehet például: 'valami@valami.va')
 
 */
+
+
+    1.
+
+    INSERT INTO `user` (`id`, `name`, `email_address`, `password`, `is_active`, `date_of_registration`) VALUES (NULL, 'Claire', 'claire@clairemail.com', 'Iamclaire', '1', '2022-07-01'), (NULL, 'Chloe', 'chloe@chloemail.com', 'Iamchloe', '1', '2022-07-02'), (NULL, 'Catherine', 'catherine@catherinemail.com', 'Iamcatherine', '1', '2022-07-07');
+
+
+    2.
+
+    INSERT INTO `messages` (`message_id`, `sender_id`, `recipient_id`, `message`, `date_sent`, `reply_id`) VALUES (NULL, '2', '1', 'Hey Claire,\r\nIt\'s Chloe!', '2022-07-07', NULL), (NULL, '3', '2', 'Who are you?', '2022-07-07', NULL);
+
+    INSERT INTO `messages` (`message_id`, `sender_id`, `recipient_id`, `message`, `date_sent`, `reply_id`) VALUES (NULL, '1', '2', 'OK', '2022-07-08', '1');
+
+

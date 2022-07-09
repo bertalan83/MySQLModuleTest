@@ -32,6 +32,9 @@ Jó munkát!
 
     Elvárt eredmény:
         -1523
+
+        SELECT MIN(country.IndepYear)
+        FROM `country`;
 */
 
 
@@ -44,6 +47,10 @@ Jó munkát!
 
     Elvárt eredmény:
         CHN Code-ú ország (China)
+
+        SELECT country.Code, country.Name
+        FROM `country`
+        WHERE country.IndepYear IS NOT NULL ORDER BY country.IndepYear LIMIT 1;
 */
 
 
@@ -56,6 +63,12 @@ Jó munkát!
         550 rekord
         ID szerint növekvő sorrendben az első 5 darab: 2, 3, 8, 11, 34
         ID szerint növekvő sorrendben az utolsó 3 darab: 4076, 4078, 4079
+
+        SELECT *
+        FROM `city`
+        WHERE city.Name = city.District
+        GROUP BY city.ID
+        ORDER BY city.ID;
 */
 
 
@@ -68,6 +81,10 @@ Jó munkát!
     Elvárt eredmény:
         7 rekord
         országnevek: Bangladesh, Bahrain, Kuwait, Mauritania, Qatar, Sudan, Sierra Leone
+
+        SELECT country.Name, country.HeadOfState
+        FROM `country`
+        WHERE country.HeadOfState LIKE "%AHMAD%" OR country.HeadOfState LIKE "%AHMED%" OR country.HeadOfState LIKE "%HAMAD%";
 */
 
 
@@ -80,6 +97,10 @@ Jó munkát!
     Elvárt eredmény:
         10 rekord
         kontinensek: Oceania (7 db), Europe (2), South America (1)
+
+        SELECT country.Name, country.Continent
+        FROM `country`
+        WHERE country.LifeExpectancy IS NULL AND country.Population > 0;
 */
 
 
@@ -91,6 +112,10 @@ Jó munkát!
 
     Elvárt eredmény:
         63 rekord
+
+        SELECT country.Code, country.Name, country.GNP, country.GNPOld
+        FROM `country`
+        WHERE country.GNPOld > country.GNP;
 */
 
 
@@ -102,6 +127,11 @@ Jó munkát!
 
     Elvárt eredmény:
         29 rekord
+
+        SELECT countrylanguage.Language FROM `countrylanguage`
+        WHERE countrylanguage.Language LIKE "%IAN"
+        GROUP BY countrylanguage.Language
+        ORDER BY countrylanguage.Language;
 */
 
 
@@ -115,6 +145,11 @@ Jó munkát!
         Southern Europe: 15
         Western Europe: 9
         Eastern Europe 10
+
+        SELECT country.Region, COUNT(*)
+        FROM `country`
+        WHERE country.Region LIKE "%EUROPE%"
+        GROUP BY country.Region;
 */
 
 
@@ -129,6 +164,12 @@ Jó munkát!
         239 rekord
         első országkód: AFG
         utolsó országkód: ZWE
+
+        SELECT country.`Code`, country.Name, city.Name AS "Capital"
+        FROM `country`
+        LEFT JOIN city
+        ON country.Code = city.CountryCode AND country.Capital = city.ID
+        ORDER BY country.Name;
 */
 
 
@@ -140,6 +181,10 @@ Jó munkát!
     Elvárt eredmény:
         10 rekord
         a városok ID-ja: 61, 62, 1791, 2316, 2317, 2728, 2805, 2806, 3333, 3538
+
+        SELECT *
+        FROM `city`
+        WHERE city.Population LIKE "___";
 */
 
 
@@ -153,6 +198,13 @@ Jó munkát!
     Elvárt eredmény:
         35 rekord
         országkódok, amelyek szerepelnek a listában: DNK, FIN, FRO, ISL, NOR, SJM, SWE
+
+        SELECT city.ID, city.Name, city.CountryCode, city.District, city.Population
+        FROM `city`
+        INNER JOIN country
+        ON city.CountryCode = country.Code
+        WHERE country.Region LIKE "%Nordic Countries%"
+        ORDER BY city.CountryCode, city.Population DESC;
 */
 
 
@@ -168,6 +220,12 @@ Jó munkát!
         19 rekord
         legkisebb: Northern Africa (1)
         legnagyobb: Caribbean (11)
+
+        SELECT country.Region, COUNT(*)
+        FROM `country`
+        WHERE country.IndepYear IS NULL OR country.IndepYear < 1500
+        GROUP BY country.Region
+        ORDER BY COUNT(*);
 */
 
 
@@ -179,6 +237,12 @@ Jó munkát!
     Elvárt eredmény:
         16 rekord
         országkódok: ABW, ANT, BHR, BRN, COK, DNK, ISL, JPN, KWT, MAC, MCO, MDV, MYS, NOR, PRI, TTO
+
+        SELECT *
+        FROM `countrylanguage`
+        INNER JOIN country
+        ON countrylanguage.CountryCode = country.Code
+        WHERE countrylanguage.Language = "English" AND countrylanguage.IsOfficial = "F";
 */
 
 
@@ -190,6 +254,12 @@ Jó munkát!
     Elvárt eredmény:
         7 rekord
         országkódok: ATA, ATF, BVT, HMD, IOT, SGS, UMI
+
+        SELECT *
+        FROM `country`
+        LEFT JOIN city
+        ON country.Code = city.CountryCode
+        WHERE city.Name IS NULL;
 */
 
 
@@ -201,6 +271,12 @@ Jó munkát!
 
     Elvárt eredmény:
         65 rekord
+
+        SELECT country.Name, country.Continent, country.Region, countrylanguage.Language, countrylanguage.Percentage
+        FROM `countrylanguage`
+        INNER JOIN country
+        ON countrylanguage.CountryCode = country.Code
+        WHERE countrylanguage.Percentage = "0";
 */
 
 
@@ -218,6 +294,10 @@ bónusz 1. (4 pont)
 
     Elvárt eredmény:
         88 rekord
+
+        SELECT country.Code, country.Code2, country.Name
+        FROM `country`
+        WHERE LEFT(country.Code, 2) != country.Code2;
 */
 
 
@@ -231,6 +311,14 @@ bónusz 2. (4 pont)
 
     Elvárt eredmény:
         363 rekord
+
+        SELECT *
+        FROM `city`
+        INNER JOIN country
+        ON city.CountryCode = country.Code
+        WHERE country.IndepYear IS NOT NULL
+        ORDER by country.IndepYear
+        LIMIT 363;
 */
 
 
@@ -247,6 +335,10 @@ bónusz 3. (4 pont)
             AFG 52.4
             AGO 37.2
             AIA 0.0
+
+        SELECT countrylanguage.CountryCode, MAX(countrylanguage.Percentage)
+        FROM `countrylanguage`
+        GROUP BY countrylanguage.CountryCode;
 */
 
 
